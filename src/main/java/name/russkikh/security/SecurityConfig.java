@@ -16,9 +16,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, proxyTargetClass = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private UserDetailsService userDetailsService;
-    private LoginSuccessHandler successHandler;
-
+    private final UserDetailsService userDetailsService;
+    private final LoginSuccessHandler successHandler;
 
     public SecurityConfig(UserDetailsService userDetailsService, LoginSuccessHandler successHandler) {
         this.userDetailsService = userDetailsService;
@@ -49,10 +48,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
             .authorizeRequests()
                 .antMatchers("/login").anonymous()
-                .antMatchers("/admin").hasRole("ADMIN")
-                .antMatchers("/user").hasAnyRole("ADMIN", "USER")
-                .antMatchers("/user/new").hasRole("ADMIN")
-                .antMatchers("/user/*/edit").hasRole("ADMIN")
+                .antMatchers("/admin").hasAuthority("Admin")
+                .antMatchers("/user").hasAnyAuthority("Admin", "User")
+                .antMatchers("/user/new").hasAuthority("Admin")
+                .antMatchers("/user/*/edit").hasAuthority("Admin")
                 .and()
             .logout()
                 .permitAll()

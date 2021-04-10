@@ -31,9 +31,9 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         long id = userService
                 .findUserByName(((UserDetails) authentication.getPrincipal()).getUsername()).get().getId();
 
-        if (roles.contains("ROLE_ADMIN")) {
+        if (roles.contains("Admin")) {
             httpServletResponse.sendRedirect("/admin");
-        } else if (roles.contains("ROLE_USER")) {
+        } else if (roles.contains("User")) {
             httpServletResponse.sendRedirect("/user/" + id);
         }
     }
