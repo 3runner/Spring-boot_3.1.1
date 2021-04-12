@@ -2,7 +2,7 @@ package name.russkikh.controller;
 
 import name.russkikh.model.User;
 import name.russkikh.service.RoleService;
-import name.russkikh.service.AdminService;
+import name.russkikh.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,17 +12,17 @@ import java.util.HashSet;
 
 @Controller
 public class AdminController {
-    private final AdminService adminService;
+    private final UserService userService;
     private final RoleService roleService;
 
-    public AdminController(AdminService adminService, RoleService roleService) {
-        this.adminService = adminService;
+    public AdminController(UserService userService, RoleService roleService) {
+        this.userService = userService;
         this.roleService = roleService;
     }
 
     @GetMapping("/admin")
     public String getUserPage(Model model) {
-        model.addAttribute("users", adminService.findAll());
+        model.addAttribute("users", userService.findAll());
         return "users";
     }
 
@@ -38,13 +38,13 @@ public class AdminController {
         if (bindingResult.hasErrors()){
             return "new";
         }
-        adminService.save(user);
+        userService.save(user);
         return "redirect:/admin";
     }
 
     @GetMapping("/user/{id}/edit")
     public String edit(Model model, @PathVariable("id") long id) {
-        model.addAttribute("user", adminService.getOne(id));
+        model.addAttribute("user", userService.getOne(id));
         model.addAttribute("allRoles", new HashSet<>(roleService.findAll()));
         return "edit";
     }
@@ -55,13 +55,13 @@ public class AdminController {
             user.setId(id);
             return "edit";
         }
-        adminService.save(user);
+        userService.save(user);
         return "redirect:/admin";
     }
 
     @DeleteMapping("/user/{id}")
     public String deleteUser(@PathVariable long id, Model model) {
-        adminService.deleteById(id);
+        userService.deleteById(id);
         return "redirect:/admin";
     }
 }
