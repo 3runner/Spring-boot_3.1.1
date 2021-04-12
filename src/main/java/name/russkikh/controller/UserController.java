@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@RequestMapping("/user")
 public class UserController {
     private final UserService userService;
 
@@ -15,7 +16,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/{id}")
     public String show(@PathVariable long id, Model model) {
         User user = userService.findById(id).orElseThrow(() -> new UsernameNotFoundException("Invalid user id " + id));
         model.addAttribute("user", user);

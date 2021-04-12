@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashSet;
 
 @Controller
+@RequestMapping("/admin")
 public class AdminController {
     private final UserService userService;
     private final RoleService roleService;
@@ -20,20 +21,20 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/admin")
+    @GetMapping
     public String getUserPage(Model model) {
         model.addAttribute("users", userService.findAll());
         return "users";
     }
 
-    @GetMapping("/user/new")
+    @GetMapping("/new")
     public String createNewUser(@ModelAttribute("user") User user,
                                 Model model) {
         model.addAttribute("allRoles", new HashSet<>(roleService.findAll()));
         return "new";
     }
 
-    @PostMapping("/admin")
+    @PostMapping
     public String createNewUser(@ModelAttribute("user") User user, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()){
             return "new";
@@ -42,14 +43,14 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/user/{id}/edit")
+    @GetMapping("/{id}")
     public String edit(Model model, @PathVariable("id") long id) {
         model.addAttribute("user", userService.getOne(id));
         model.addAttribute("allRoles", new HashSet<>(roleService.findAll()));
         return "edit";
     }
 
-    @PatchMapping("/user/{id}")
+    @PatchMapping("/{id}")
     public String updateUser(@PathVariable long id, User user, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             user.setId(id);
@@ -59,7 +60,7 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/{id}")
     public String deleteUser(@PathVariable long id, Model model) {
         userService.deleteById(id);
         return "redirect:/admin";

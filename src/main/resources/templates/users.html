@@ -11,10 +11,10 @@
     <a th:href="@{/user/{id}(id=${user.getId()})}"
        th:text="${user.getName()}">user</a>
 
-    <a th:href="@{/user/{id}/edit(id=${user.getId()})}">Edit</a>
+    <a th:href="@{/admin/{id}(id=${user.getId()})}">Edit</a>
 
     <a>
-        <form th:method="DELETE" th:action="@{/user/{id}(id=${user.getId()})}">
+        <form th:method="DELETE" th:action="@{/admin/{id}(id=${user.getId()})}">
             <input type="submit" value="Delete"/>
         </form>
     </a>
@@ -24,7 +24,7 @@
 
 <hr/>
 
-<a href="/user/new">Create new person</a>
+<a href="/admin/new">Create new person</a>
 
 <hr/>
 
